@@ -11,8 +11,8 @@ public class Main {
     public static final String FILE_PATH_IT_WITH_KEYS = "/home/user/Downloads/trakimo_exel_italian.xlsx";
     public static final String FILE_PATH_IT_WITH_KEYS_TXT = "/home/user/Downloads/trakimo_italian.txt";
 
-    public static void main(String[] args) throws IOException, InvalidFormatException {
-        Workbook workbook = WorkbookFactory.create(new File(FILE_PATH_ENG_WITH_KEYS));
+    /*public static void main(String[] args) throws IOException, InvalidFormatException {
+       *//* Workbook workbook = WorkbookFactory.create(new File(FILE_PATH_ENG_WITH_KEYS));
         Map<String, String> engWithKeys = parseExcelDocToMap(0, workbook);
         Map<String, String> italyWithEng = parseExcelDocToMap(1, workbook);
         //Map<Integer, XmlAndroidDescriptor> androidDescriptorMap = new HashMap<>();
@@ -34,9 +34,9 @@ public class Main {
 
 
         //printMap(italianWithKey);
-        workbook.close();
+        workbook.close();*//*
 
-    }
+    }*/
 
     public static void printMap(Map<String, String> map) {
         int counter = 1;
@@ -44,14 +44,14 @@ public class Main {
             System.out.printf("%d : %s\t: %s\t\n", counter++, pair.getKey(), pair.getValue());
         }
     }
-
+/*
     public static Map<String, String> parseExcelDocToMap(int sheetId,
                                                          Workbook workbook) throws IOException, InvalidFormatException {
 
         Sheet sheet = workbook.getSheetAt(sheetId);
         final DataFormatter formatter = new DataFormatter();
-        Map<String, String> engWithKeys = new HashMap<>();
-        sheet.forEach(row -> {
+       // Map<String, String> engWithKeys = new HashMap<>();
+      *//*  sheet.forEach(row -> {
                     XmlAndroidDescriptor tempEntity = new XmlAndroidDescriptor();
                     String key = formatter.formatCellValue(row.getCell(0));
                     String value = formatter.formatCellValue(row.getCell(1));
@@ -59,10 +59,10 @@ public class Main {
                     engWithKeys.put(key, value);
 
                 }
-        );
+        );*//*
 
         return engWithKeys;
-    }
+    }*/
 
     public static boolean createWorkbook(String sheetName,
                                          Map<String, String> map) throws IOException {
