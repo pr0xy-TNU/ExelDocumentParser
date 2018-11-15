@@ -1,7 +1,10 @@
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Function3;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -53,21 +56,38 @@ public class Starter {
         .forEach(System.out::println);
 
     System.out.println("from Rx");
+    /*Consumer<String> consumer = System.out::println;
+    Observable<String> observable1 = Observable.fromArray("A", "B", "C", "D");
+    Observable<String> observable2 = Observable.fromArray("E", "F", "G", "H");
+    Observable<String> observable3 = Observable.fromArray("I", "J", "C", "S");
+    Observable.zip(observable1, observable2, observable3, (o, o2, o3) -> o.concat(o2).concat(o3))
+        .subscribe(consumer).dispose();*/
 
-    getUserListRx(10)
-        .map(User::getName)
-        .filter(pred -> pred.endsWith("5"))
-        .subscribe(System.out::println).dispose();
+    Observable<User> observable1 = getUserListRx(10, "A");
+    Observable<User> observable2 = getUserListRx(10, "B");
+    Observable<User> observable3 = getUserListRx(10, "C");
+
+    Observable.zip(observable1, observable2, observable3, (user, user2, user3) -> {
+      User temp = new User();
+      temp.setName(user.getName() + " " + user2.getName() + " " + user3.getName());
+      temp.setSuername(user.getSuername() + " " + user2.getSuername() + " " + user3.getSuername());
+      temp.setName(user.getName() + " " + user2.getName() + " " + user3.getName());
+      temp.setAge(user.getAge() + user2.getAge() + user3.getAge());
+      return user;
+    })
+        .subscribe(System.out::println)
+        .dispose();
 
   }
 
-  private static Observable<User> getUserListRx(int size) {
+
+  private static Observable<User> getUserListRx(int size, String from) {
     return Observable.range(0, size)
         .flatMap(item -> {
           User tempInst = new User();
           tempInst.setAge(new Random().nextInt(70));
-          tempInst.setName(String.format("Name-%d", new Random().nextInt(70)));
-          tempInst.setSuername(String.format("Surname-%d", new Random().nextInt(70)));
+          tempInst.setName(String.format("Name-%d <%s>", new Random().nextInt(70), from));
+          tempInst.setSuername(String.format("Surname-%d <%s>", new Random().nextInt(70), from));
           return Observable.fromArray(tempInst);
         });
   }
